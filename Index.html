@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+  <meta charset="UTF-8" />
+  <title>Driftk1ng</title>
+  <link rel="icon" href="favicon.ico" type="image/x-icon">
+  <style>
+    html, body { margin:0; padding:0; background:#000; overflow:hidden; }
+    #hud {
+      position:absolute; top:8px; left:8px;
+      font-family: monospace; color:#0f0;
+      background:rgba(0,0,0,0.4); padding:6px 10px; border-radius:6px;
+      display:none;
+    }
+    #menu {
+      position:absolute; top:0; left:0; right:0; bottom:0;
+      display:flex; flex-direction:column; align-items:center; justify-content:center;
+      background:#111; color:#fff; font-family:sans-serif;
+    }
+    button {
+      margin:10px; padding:10px 20px; font-size:20px; cursor:pointer;
+    }
+    #garageUI {
+      position:absolute; top:0; left:0; right:0; bottom:0;
+      display:none; flex-direction:column; align-items:center; justify-content:center;
+      font-family:sans-serif; color:#fff;
+      background: rgba(0,0,0,0.3);
+    }
+    #garageUI button { margin:8px; padding:10px 20px; font-size:18px; }
+    #devBanner {
+      position:absolute; bottom:0; left:0; right:0;
+      background:rgba(0,0,0,0.85); color:#0f0;
+      font-family: monospace; font-size:14px;
+      padding:6px; border-top:1px solid #0f0;
+      display:none; flex-direction:column; gap:4px;
+      z-index: 10;
+    }
+    #devControls { display:flex; gap:20px; flex-wrap:wrap; }
+    #devControls label { display:flex; flex-direction:column; color:#0f0; width: 220px; }
+    .slider-label {
+      display: flex;
+      justify-content: space-between;
+    }
+    #ebrakeIndicator { color:red; font-weight:bold; }
+  </style>
+  <script src="https://cdn.jsdelivr.net/npm/pixi.js@7.x/dist/pixi.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/planck@latest/dist/planck.min.js"></script>
+</head>
+<body>
+<div id="menu">
+  <h1>🏎️ Driftk1ng</h1>
+  <button id="btnTrack">Till Banan</button>
+  <button id="btnGarage">Garage</button>
+<button id="btnInstructions">Instruktioner</button>
+  <div style="position:absolute;bottom:10px;font-size:12px;color:#888;">Spara/återställ data i webbläsarens localStorage.</div>
+  <div style="position:absolute;bottom:0px;left:0px;right:0px;height:1px;background:#333;"></div>
+</div>
+<div id="hud"></div>
+<div id="garageUI">
+  <h2>Garage</h2>
+  <div id="garageScore"></div>
+  <button onclick="buyUpgrade('motor')">Motor (kostar 1000)</button>
+  <button onclick="buyUpgrade('dack')">Däck (kostar 800)</button>
+  <button onclick="buyUpgrade('diff')">Diff (kostar 1200)</button>
+  <button onclick="backToMenu()">Tillbaka</button>
+</div>
+<div id="devBanner">
+  <div id="devStats">[Dev stats]</div>
+  <div id="devControls">
+    <label>
+      <div class="slider-label"><span>Drive Force</span><span id="driveForceValue">1200</span></div>
+      <input type="range" id="driveForceSlider" min="400" max="6000" value="1200">
+    </label>
+    <label>
+      <div class="slider-label"><span>Brake Force</span><span id="brakeForceValue">3500</span></div>
+      <input type="range" id="brakeForceSlider" min="1000" max="8000" value="3500">
+    </label>
+    <label>
+      <div class="slider-label"><span>Grip Factor</span><span id="gripValue">2.0</span></div>
+      <input type="range" id="gripSlider" min="0.5" max="5.0" step="0.1" value="2.0">
+    </label>
+    <label>
+      <div class="slider-label"><span>Angular Damping</span><span id="angularDampingValue">3.5</span></div>
+      <input type="range" id="angularDampingSlider" min="0.5" max="10.0" step="0.1" value="3.5">
+    </label>
+    <label>
+      <div class="slider-label"><span>Drag Factor</span><span id="dragValue">2.0</span></div>
+      <input type="range" id="dragSlider" min="0.1" max="5.0" step="0.1" value="2.0">
+    </label>
+    <label>
+      <div class="slider-label"><span>Steer Angle</span><span id="steerValue">0.52</span></div>
+      <input type="range" id="steerSlider" min="0.1" max="1.0" step="0.01" value="0.52">
+    </label>
+  </div>
+  <br>
+  <button id="resetDevDefaults" style="padding: 5px 10px; font-size: 14px; align-self: flex-start;">Återställ Sliders</button>
+  <div id="ebrakeIndicator">Handbroms: AV</div>
+</div>
+<div id="instructionsModal" style="display:none; position:absolute; top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.7); color:white; font-family:sans-serif; flex-direction:column; justify-content:center; align-items:center; text-align:center;">
+  <div style="background:#222; padding: 40px; border-radius:10px; max-width:400px;">
+    <h2>Instruktioner</h2>
+    <p style="text-align:left; line-height:1.6;">
+      <b>Styrning:</b> WASD eller Piltangenter<br>
+      <b>Handbroms:</b> Mellanslag<br>
+      <b>Reset Car:</b> R<br>
+      <b>Dev Meny:</b> F2
+    </p>
+    <button id="closeInstructions">Stäng</button>
+  </div>
+</div>
+<script src="script.js" defer></script>
+</body>
+</html>
