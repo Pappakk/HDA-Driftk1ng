@@ -185,7 +185,7 @@ class Game {
 
     // 1. Anisotropisk friktion (motverka sidoglidning)
     // Detta är kärnan i "drifting"-känslan. Vi applicerar en kraft som motverkar bilens sidorörelse.
-    const right=b.getWorldVector(planck.Vec2(0,1));
+    const right=b.getWorldVector(planck.Vec2(1,0));
     let latVel=right.mul(planck.Vec2.dot(v,right));
     let latImpulse=latVel.mul(-b.getMass());
     const maxLatImp = b.getMass() * p.gripFactor; // gripFactor bestämmer hur mycket grepp däcken har.
